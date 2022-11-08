@@ -16,12 +16,12 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/login' exact element={
-          <Login token={token} setToken={setToken} />
-        } />
         <Route path='/register' exact element={<Register token={token} />} />
         <Route path='/update' exact element={<Update taskId={taskId} setTaskId={setTaskId} token={token} />} />
         <Route path='/user' exact element={<Home setTaskId={setTaskId} token={token} setToken={setToken} />} />
+        <Route path='/*' exact element={
+          <Login token={token} setToken={setToken} />
+        } />
       </Routes>
     </BrowserRouter>
 
