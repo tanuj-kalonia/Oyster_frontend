@@ -12,7 +12,7 @@ const Update = ({ taskId, setTaskId, token }) => {
         try {
             e.preventDefault();
             console.log(taskId, token)
-            axios.post("http://localhost:4000/api/v1/task/update", { taskId, userId: token, title, description })
+            axios.post("https://oyester-backend-2.onrender.com/api/v1/task/update", { taskId, userId: token, title, description })
                 .then(res => {
                     console.log(res.data)
                     setTaskId('');

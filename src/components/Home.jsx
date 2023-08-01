@@ -15,7 +15,7 @@ const Home = ({ setTaskId, token, setToken }) => {
 
     const fetchTasks = async () => {
         console.log(token)
-        await axios.post("http://localhost:4000/api/v1/user", { user: token })
+        await axios.post("https://oyester-backend-2.onrender.com/api/v1/user", { user: token })
             .then(res => {
                 console.log(res.data);
                 setName(res.data.user.name)
@@ -28,7 +28,7 @@ const Home = ({ setTaskId, token, setToken }) => {
         try {
             e.preventDefault();
 
-            await axios.post('http://localhost:4000/api/v1/task', { title, description, userId: token })
+            await axios.post('https://oyester-backend-2.onrender.com/api/v1/task', { title, description, userId: token })
                 .then(res => {
                     console.log(res.data)
                     if (res.data.success) {
@@ -57,7 +57,7 @@ const Home = ({ setTaskId, token, setToken }) => {
     const logoutHandler = async () => {
 
         try {
-            await axios.get("http://localhost:4000/api/v1/auth/logout");
+            await axios.get("https://oyester-backend-2.onrender.com/api/v1/auth/logout");
 
             history('/login');
             toast.success('Logout successfully')
@@ -134,7 +134,7 @@ const Task = ({ id, title, description, token, fetchTasks, setTaskId }) => {
 
         try {
             console.log(`taskid : ${taskId}`);
-            await axios.post(`http://localhost:4000/api/v1/task/delete`, { taskId, userId: token })
+            await axios.post(`https://oyester-backend-2.onrender.com/api/v1/task/delete`, { taskId, userId: token })
                 .then(res => {
                     console.log(res);
                     toast.success("Deleted Successfully")

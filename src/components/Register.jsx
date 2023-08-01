@@ -21,7 +21,7 @@ const Register = ({ token }) => {
 
         try {
             e.preventDefault()
-            const { data } = await axios.post('http://localhost:4000/api/v1/auth/register', {
+            const { data } = await axios.post('https://oyester-backend-2.onrender.com/api/v1/auth/register', {
                 name,
                 username,
                 password

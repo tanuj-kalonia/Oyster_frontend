@@ -24,7 +24,7 @@ const Login = ({ token, setToken }) => {
             e.preventDefault();
             setStatus('Logging in...');
 
-            await axios.post('http://localhost:4000/api/v1/auth/login', { username, password })
+            await axios.post('https://oyester-backend-2.onrender.com/api/v1/auth/login', { username, password })
                 .then(res => {
                     console.log(res.data)
                     if (res.data.success) {
