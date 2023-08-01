@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import axios from "axios"
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import toast, { Toaster } from 'react-hot-toast';
+
 
 const Home = ({ setTaskId, token, setToken }) => {
     const [tasks, setTasks] = useState([]);
@@ -13,7 +15,7 @@ const Home = ({ setTaskId, token, setToken }) => {
 
     const fetchTasks = async () => {
         console.log(token)
-        await axios.post("https://oyster-tanuj.herokuapp.com/api/v1/user", { user: token })
+        await axios.post("http://localhost:4000/api/v1/user", { user: token })
             .then(res => {
                 console.log(res.data);
                 setName(res.data.user.name)
@@ -26,7 +28,7 @@ const Home = ({ setTaskId, token, setToken }) => {
         try {
             e.preventDefault();
 
-            await axios.post('https://oyster-tanuj.herokuapp.com/api/v1/task', { title, description, userId: token })
+            await axios.post('http://localhost:4000/api/v1/task', { title, description, userId: token })
                 .then(res => {
                     console.log(res.data)
                     if (res.data.success) {
@@ -35,12 +37,16 @@ const Home = ({ setTaskId, token, setToken }) => {
                         // setToken(res.data.user.id);
                         // history('/user');
                         console.log(res.data);
+                        toast.success('Added Successfully', { duration: 2000 })
                         fetchTasks();
 
                     }
                     // else setStatus('')
                 })
-                .catch(err => console.log(err))
+                .catch(err => {
+                    toast.error('Both fields are required')
+                    console.log(err)
+                })
 
 
         } catch (err) {
@@ -51,12 +57,14 @@ const Home = ({ setTaskId, token, setToken }) => {
     const logoutHandler = async () => {
 
         try {
-            await axios.get("https://oyster-tanuj.herokuapp.com/api/v1/auth/logout");
+            await axios.get("http://localhost:4000/api/v1/auth/logout");
 
             history('/login');
+            toast.success('Logout successfully')
             localStorage.removeItem('token');
             setToken('');
         } catch (error) {
+            toast.error('Could not log out')
             console.log(error)
         }
 
@@ -96,7 +104,7 @@ const Home = ({ setTaskId, token, setToken }) => {
             <div className="allTasks container">
                 <h1>All Tasks</h1>
 
-                <div className="taskArray container">
+                <div className="taskArray">
                     {tasks.map((task, index) => (
                         <Task
                             key={index}
@@ -110,6 +118,7 @@ const Home = ({ setTaskId, token, setToken }) => {
                     ))}
                 </div>
             </div>
+            <Toaster />
         </div>
     )
 }
@@ -125,11 +134,15 @@ const Task = ({ id, title, description, token, fetchTasks, setTaskId }) => {
 
         try {
             console.log(`taskid : ${taskId}`);
-            await axios.post(`https://oyster-tanuj.herokuapp.com/api/v1/task/delete`, { taskId, userId: token })
+            await axios.post(`http://localhost:4000/api/v1/task/delete`, { taskId, userId: token })
                 .then(res => {
                     console.log(res);
+                    toast.success("Deleted Successfully")
                     fetchTasks();
-                }).catch(err => console.log(err))
+                }).catch(err => {
+                    toast.error('Cound not delete, Please try again')
+                    console.log(err)
+                })
 
         } catch (error) {
             console.log(error);

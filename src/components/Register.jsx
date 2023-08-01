@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-
+import toast, { Toaster } from 'react-hot-toast';
 
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -21,7 +21,7 @@ const Register = ({ token }) => {
 
         try {
             e.preventDefault()
-            const { data } = await axios.post('https://oyster-tanuj.herokuapp.com/api/v1/auth/register', {
+            const { data } = await axios.post('http://localhost:4000/api/v1/auth/register', {
                 name,
                 username,
                 password
@@ -32,9 +32,11 @@ const Register = ({ token }) => {
             });
             console.log(data)
             if (data.success) {
+                toast.success('Registered Successfully', { duration: 3000 })
                 history('/login');
             }
             else {
+                toast.error('Something went wrong', { duration: 3000 })
                 console.log(data.message);
             }
         } catch (error) {
@@ -85,6 +87,7 @@ const Register = ({ token }) => {
                     <p className='login-register'>Already a user, click <Link to={"/login"} >here </Link>to login</p>
                 </form>
             </div>
+            <Toaster />
         </div>
     )
 }

@@ -12,7 +12,7 @@ const Update = ({ taskId, setTaskId, token }) => {
         try {
             e.preventDefault();
             console.log(taskId, token)
-            axios.post("https://oyster-tanuj.herokuapp.com/api/v1/task/update", { taskId, userId: token, title, description })
+            axios.post("http://localhost:4000/api/v1/task/update", { taskId, userId: token, title, description })
                 .then(res => {
                     console.log(res.data)
                     setTaskId('');
@@ -39,7 +39,7 @@ const Update = ({ taskId, setTaskId, token }) => {
                         required
                     />
                     <input
-                        type="email"
+                        type="text"
                         placeholder="New Description"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}

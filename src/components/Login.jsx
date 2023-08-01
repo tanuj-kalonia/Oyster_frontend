@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
+
 
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -10,31 +12,38 @@ const Login = ({ token, setToken }) => {
     const [status, setStatus] = useState('');
     const history = useNavigate();
 
-    // useEffect(() => {
-    //     if (token) {
-    //         history('/user');
-    //         setStatus('Logged in');
-    //     }
-    // }, [status, token])
+    useEffect(() => {
+        if (token) {
+            history('/user');
+            setStatus('Logged in');
+        }
+    }, [status, token])
 
     const loginHandler = async (e) => {
         try {
             e.preventDefault();
             setStatus('Logging in...');
 
-            await axios.post('https://oyster-tanuj.herokuapp.com/api/v1/auth/login', { username, password })
+            await axios.post('http://localhost:4000/api/v1/auth/login', { username, password })
                 .then(res => {
                     console.log(res.data)
                     if (res.data.success) {
                         localStorage.setItem('token', res.data.user.id);
                         setStatus('Logged in');
+                        toast.success(`Welcome ${res.data.user.name}`, { duration: 3000 })
                         setToken(res.data.user.id);
                         history('/user');
 
                     }
-                    else setStatus('')
+                    else {
+                        toast.error('Something went wrong', { duration: 3000 })
+                        setStatus('')
+                    }
                 })
-                .catch(err => console.log(err))
+                .catch(err => {
+                    console.log(err);
+                    toast('Incorrect Email or Password')
+                })
 
 
         } catch (err) {
@@ -67,6 +76,7 @@ const Login = ({ token, setToken }) => {
 
                 </form>
             </div>
+            <Toaster />
         </div>
     )
 }
